@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask the Animal Sage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f8f4;
+            color: #333;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+        }
+        .chat-box {
+            margin-top: 20px;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 90%;
+        }
+        .user {
+            background-color: #e3f2fd;
+            text-align: left;
+            font-weight: bold;
+        }
+        .sage {
+            background-color: #e8f5e9;
+            text-align: left;
+        }
+        .source-list {
+            padding-left: 16px;
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 10px;
+        }
+        .input-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .input-box input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #c8e6c9;
+            border-radius: 10px;
+        }
+        .input-box button {
+            background-color: #66bb6a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .input-box button:hover {
+            background-color: #43a047;
+        }
+        .rebuild-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #dfeedd;
+            border: 1px solid #3a743a;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐋 Ask the Animal Expert Agent 🐘</h1>
+
+        <div class="chat-box">
+            {% for pair in history %}
+                <div class="message user">You: {{ pair["question"] }}</div>
+                <div class="message sage">Expert: {{ pair["answer"] }}</div>
+
+                {% if pair.sources %}
+                    {% for source in pair.sources %}
+                        <div class="source-list">Source: {{ source.file_name }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <form method="post" class="input-box">
+            <input type="hidden" name="action" value="ask">
+            <input type="text" name="question" placeholder="Ask me something about animals..." required>
+            <button type="submit">Ask</button>
+        </form>
+
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <form method="post" style="display:inline;">
+                <input type="hidden" name="action" value="rebuild">
+                <button class="rebuild-button" type="submit">🔄 Rebuild Index</button>
+            </form>
+
+            <form method="post" style="display:inline;">
+                <input type="hidden" name="action" value="clear">
+                <button class="rebuild-button" type="submit">🗑️ Clear Chat</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
